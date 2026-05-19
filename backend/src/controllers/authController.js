@@ -628,9 +628,9 @@ export const sendResetOtp = async (req, res) => {
 
         const user = await userModel.findOne({ email });
         if (!user) {
-            return res.status(404).json({ 
-                success: false, 
-                message: "User not found" 
+            return res.json({
+                success: true,
+                message: 'If this email is registered, you will receive an OTP shortly. Didn\'t get it? Double-check your email address and try again.'
             });
         }
 
