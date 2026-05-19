@@ -9,7 +9,7 @@ const sendWelcomeEmail = async (name, email, role) => {
     const mailOptions = {
         from: process.env.SENDER_EMAIL,
         to: email,
-        subject: '🎉 Welcome to The Caravan Chronicle!',
+        subject: '🎉 Welcome to CitiSolve!',
         html: WELCOME_EMAIL_TEMPLATE
             .replace("{{name}}", name)
             .replace("{{email}}", email)
