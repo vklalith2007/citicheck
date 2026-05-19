@@ -67,10 +67,5 @@ export const citizenAuth = async (req, res, next) => {
             success: false,
             message: 'Invalid token'
         });
-        
-        return res.status(401).json({
-            success: false,
-            message: 'Invalid token'
-        });
     }
 };

@@ -219,19 +219,19 @@ export const verifySignupOtp = async (req, res) => {
             });
         }
 
+        if (user.verifyOtpExpireAt < Date.now()) {
+            return res.status(400).json({
+                success: false,
+                message: 'OTP expired. Please request a new one'
+            });
+        }
+
         const isValidOtp = await bcrypt.compare(otp, user.verifyOtp);
 
         if (!isValidOtp) {
             return res.status(400).json({
                 success: false,
                 message: 'Invalid OTP'
-            });
-        }
-
-        if (user.verifyOtpExpireAt < Date.now()) {
-            return res.status(400).json({
-                success: false,
-                message: 'OTP expired. Please request a new one'
             });
         }
 
