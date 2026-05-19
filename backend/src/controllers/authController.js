@@ -140,6 +140,7 @@ export const sendSignupOtp = async (req, res) => {
         }
 
         const otp = String(Math.floor(100000 + Math.random() * 900000));
+        const hashedOtp = await bcrypt.hash(otp, 10);
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const userData = {
@@ -148,7 +149,7 @@ export const sendSignupOtp = async (req, res) => {
             password: hashedPassword,
             role,
             isAccountVerified: false,
-            verifyOtp: otp,
+            verifyOtp: hashedOtp,
             verifyOtpExpireAt: Date.now() + 15 * 60 * 1000
         };
 
@@ -218,7 +219,9 @@ export const verifySignupOtp = async (req, res) => {
             });
         }
 
-        if (user.verifyOtp !== otp) {
+        const isValidOtp = await bcrypt.compare(otp, user.verifyOtp);
+
+        if (!isValidOtp) {
             return res.json({
                 success: false,
                 message: 'Invalid OTP'
@@ -298,8 +301,9 @@ export const resendSignupOtp = async (req, res) => {
         }
 
         const otp = String(Math.floor(100000 + Math.random() * 900000));
+        const hashedOtp = await bcrypt.hash(otp, 10);
 
-        user.verifyOtp = otp;
+        user.verifyOtp = hashedOtp;
         user.verifyOtpExpireAt = Date.now() + 15 * 60 * 1000;
         await user.save();
 
@@ -631,8 +635,9 @@ export const sendResetOtp = async (req, res) => {
         }
 
         const otp = String(Math.floor(100000 + Math.random() * 900000));
+        const hashedOtp = await bcrypt.hash(otp, 10);
 
-        user.resetOtp = otp;
+        user.resetOtp = hashedOtp;
         user.resetOtpExpireAt = Date.now() + 10 * 60 * 1000;
         await user.save();
 
@@ -672,7 +677,16 @@ export const resetPassword = async (req, res) => {
             });
         }
 
-        if (user.resetOtp !== otp || user.resetOtpExpireAt < Date.now()) {
+        if (!user.resetOtp || user.resetOtpExpireAt < Date.now()) {
+            return res.json({
+                success: false,
+                message: "Invalid or expired OTP",
+            });
+        }
+
+        const isValidOtp = await bcrypt.compare(otp, user.resetOtp);
+
+        if (!isValidOtp) {
             return res.json({
                 success: false,
                 message: "Invalid or expired OTP",
