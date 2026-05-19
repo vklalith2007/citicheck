@@ -1,5 +1,13 @@
 import supportModel from '../models/supportModel.js';
 import transporter from "../config/nodemailer.js";
+
+const escapeHtml = (str) => String(str)
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#039;');
+
 export const submitSupportMessage = async (req, res) => {
   try {
     const { subject, category, message } = req.body;
@@ -13,21 +21,21 @@ export const submitSupportMessage = async (req, res) => {
       senderRole: user.role, 
       status: 'pending'
     });
-    const adminEmail = 'citisolveotp@gmail.com';
-    
+    const adminEmail = process.env.ADMIN_EMAIL || 'citisolveotp@gmail.com';
 
   const mailOptions = {
+        from: process.env.SENDER_EMAIL,
         to: adminEmail,
-      subject: `New Support Message: ${subject}`,
+      subject: `New Support Message: ${escapeHtml(subject)}`,
       html: `
         <h2>New Support Message Received</h2>
-        <p><strong>From:</strong> ${user.name} (${user.email})</p>
-        <p><strong>Category:</strong> ${category}</p>
-        <p><strong>Subject:</strong> ${subject}</p>
+        <p><strong>From:</strong> ${escapeHtml(user.name)} (${escapeHtml(user.email)})</p>
+        <p><strong>Category:</strong> ${escapeHtml(category)}</p>
+        <p><strong>Subject:</strong> ${escapeHtml(subject)}</p>
         <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <p>${escapeHtml(message)}</p>
         <br>
-        <p><em>Reply directly to ${user.email} to respond.</em></p>
+        <p><em>Reply directly to ${escapeHtml(user.email)} to respond.</em></p>
       `
     };
     await transporter.sendMail(mailOptions);
@@ -42,3 +50,4 @@ export const submitSupportMessage = async (req, res) => {
     res.status(400).json({ success: false, error: 'Unable to send support message. Please try again.' });
   }
 };
+
