@@ -373,7 +373,7 @@ export const sendLoginOtp = async (req, res) => {
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: user.email,
-            subject: '🔐 Login OTP – Caravan Chronicle',
+            subject: '🔐 Login OTP – CitiSolve',
             html: EMAIL_VERIFY_TEMPLATE
                 .replace('{{otp}}', otp)
                 .replace('{{name}}', user.name)
