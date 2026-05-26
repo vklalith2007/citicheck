@@ -68,12 +68,8 @@ app.use((err, req, res, next) => {
 });
 
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("✅ MongoDB connected");
-  })
-  .catch(err => {
-    console.error("❌ MongoDB connection failed:", err);
-  });
+const PORT = process.env.PORT || 3000;
 
-export default serverless(app);
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
+});
