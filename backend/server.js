@@ -4,7 +4,6 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
-import serverless from "serverless-http";
 
 import authRouter from "./src/routes/authroutes.js";
 import getlocation from "./src/routes/geocode.js";
@@ -70,9 +69,9 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server running on ${PORT}`);
+// });
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
@@ -81,3 +80,11 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch(err => {
     console.error(err);
   });
+
+// REPLACE with:
+if (!isProd) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+}
+
+export default app; // 👈 only this matters

@@ -18,8 +18,7 @@
     "node-fetch": "^3.3.2",
     "nodemailer": "^8.0.7",
     "nodemon": "^3.1.11",
-    "resend": "^6.12.3",
-    "serverless-http": "^4.0.0"
+    "resend": "^6.12.3"
   },
   "name": "backend",
   "version": "1.0.0",
