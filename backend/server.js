@@ -76,4 +76,4 @@ mongoose.connect(process.env.MONGODB_URI)
     console.error("❌ MongoDB connection failed:", err);
   });
 
-export const handler = serverless(app);
+export default serverless(app);
