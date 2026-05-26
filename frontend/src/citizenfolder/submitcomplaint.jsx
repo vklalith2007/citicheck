@@ -223,7 +223,9 @@ const SubmitComplaint = () => {
     }
 
     setShowSuccess(true);
-    setSuccessMessage("Complaint submitted successfully!");
+    setSuccessMessage(result.data.warning
+      ? `Complaint submitted successfully. Warning: ${result.data.warning.reason}`
+      : "Complaint submitted successfully!");
     clearForm();
 
     setTimeout(() => {

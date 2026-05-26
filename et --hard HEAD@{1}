@@ -1,0 +1,25 @@
+[33me974366[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: reset: moving to HEAD~2
+[33mc034f7a[m HEAD@{1}: commit: feat: update dependencies and add location-based image validation
+[33m038b9df[m HEAD@{2}: commit: Add password hashing utility, update dependencies, and enhance rate limiting configurations
+[33me974366[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{3}: commit: Implement forgot password functionality with OTP verification and password reset
+[33m868a4ea[m HEAD@{4}: commit: Update login OTP email subject to reflect rebranding to CitiSolve
+[33m6a58f27[m HEAD@{5}: commit: Refactor email subjects to reflect rebranding to CitiSolve; remove admin role state/district validation
+[33mcf2d2bc[m HEAD@{6}: commit: Update email templates and nodemailer configuration to reflect rebranding to CitiSolve
+[33m8efb008[m HEAD@{7}: commit: Update account verification message; expand valid categories in contactAdmin; refine password validation message; add new categories in support staff dropdown
+[33m68de8f8[m HEAD@{8}: commit: Add comments for clarity in deleteUser; update email handling in contactAdmin; adjust rate limits for login and OTP requests; enforce password reset limiter in routes
+[33m39033f8[m HEAD@{9}: commit: Enhance input validation in submitSupportMessage; ensure required fields and character limits are enforced
+[33m9eaf287[m HEAD@{10}: commit: Sanitize email content in support message submission; improve security and prevent XSS attacks
+[33m2975deb[m HEAD@{11}: commit: Refactor authentication middleware usage in routes; remove unnecessary token verification for staff and support routes
+[33ma8ba1c1[m HEAD@{12}: commit: Refactor OTP verification logic; swap expiration and validity checks for clearer error messaging
+[33mdf1161b[m HEAD@{13}: commit: Update response handling in signup and login OTP flows; return appropriate status codes for error responses
+[33m2d981c2[m HEAD@{14}: commit: Add rate limiters for geocode, complaint submission, and support message routes; enhance request handling and error messaging
+[33maa5a08f[m HEAD@{15}: commit: Add image validation middleware for uploaded files; ensure only valid image formats are accepted
+[33mc020d53[m HEAD@{16}: commit: Validate latitude and longitude inputs in reverse geocoding route; update fetch URL parameters accordingly
+[33m0a80b91[m HEAD@{17}: commit: Hash OTPs for signup and reset flows; update verification logic to compare hashed values
+[33m1fa4c0d[m HEAD@{18}: commit: Refactor error handling in controllers to provide generic error messages
+[33mfdfce5f[m HEAD@{19}: commit: Refactor OTP handling in login flow: replace loginOtp with verifyOtp and adjust expiration logic
+[33m0bc302c[m HEAD@{20}: commit: Replace error message with a generic 'Invalid token' response in verifyToken middleware
+[33mb8ca82d[m HEAD@{21}: commit: Refactor token declaration to use 'let' for consistency across middleware
+[33m03aef4b[m HEAD@{22}: commit: Restrict admin account creation in public signup and update role validation
+[33m82d6f91[m HEAD@{23}: Branch: renamed refs/heads/master to refs/heads/main
+[33m82d6f91[m HEAD@{25}: commit (initial): first commit
