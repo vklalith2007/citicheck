@@ -181,7 +181,7 @@ export const sendSignupOtp = async (req, res) => {
         });
 
     } catch (error) {
-        comsole.error('Error in sendSignupOtp:', error.message);
+        console.error('Error in sendSignupOtp:', error.message);
         return res.status(500).json({
             success: false,
             message: 'Something went wrong. Please try again later.'
