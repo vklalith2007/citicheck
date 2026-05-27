@@ -72,9 +72,8 @@ const setTokenCookies = (res, accessToken, refreshToken) => {
     const commonOptions = {
         httpOnly: true,
         secure: isProduction,
-        sameSite: isProduction ? 'strict' : 'lax',
-        path: '/',
-        domain: isProduction ? process.env.COOKIE_DOMAIN : undefined
+        sameSite: isProduction ? 'none' : 'lax',
+        path: '/'
     };
     
     res.cookie('accessToken', accessToken, {
@@ -89,15 +88,8 @@ const setTokenCookies = (res, accessToken, refreshToken) => {
 };
 
 const clearAuthCookies = (res) => {
-    const isProduction = process.env.NODE_ENV === 'production';
-    
-    const clearOptions = {
-        path: '/',
-        domain: isProduction ? process.env.COOKIE_DOMAIN : undefined
-    };
-    
-    res.clearCookie('accessToken', clearOptions);
-    res.clearCookie('refreshToken', clearOptions);
+    res.clearCookie('accessToken', { path: '/' });
+    res.clearCookie('refreshToken', { path: '/' });
 };
 
 
