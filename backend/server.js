@@ -21,11 +21,10 @@ if (isProd) {
 
 app.use(helmet());
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:3000",
-  process.env.FRONT_END_URL,
-];
+app.use(cors({
+  origin: process.env.FRONT_END_URL,
+  credentials: true,
+}));
 
 app.use(cors({
   origin: function (origin, callback) {
