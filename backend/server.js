@@ -12,6 +12,7 @@ import { multerErrorHandler } from "./src/middleware/errorhandler.js";
 import supportRouter from "./src/routes/supportRoutes.js";
 import staffRouter from "./src/routes/staffroutes.js";
 import adminRouter from "./src/routes/adminroutes.js";
+
 const app = express();
 const isProd = process.env.NODE_ENV === "production";
 
@@ -19,6 +20,31 @@ if (isProd) {
   app.set("trust proxy", 1);
 }
 
+// =============================================
+// MongoDB Connection Cache (for Vercel serverless)
+// =============================================
+let cachedConnection = null;
+
+const connectDB = async () => {
+  // If already connected, reuse the connection
+  if (cachedConnection && mongoose.connection.readyState === 1) {
+    return cachedConnection;
+  }
+
+  // New connection
+  cachedConnection = await mongoose.connect(process.env.MONGODB_URI, {
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 10000,
+    socketTimeoutMS: 45000,
+  });
+
+  console.log("✅ MongoDB connected");
+  return cachedConnection;
+};
+
+// =============================================
+// Middleware
+// =============================================
 app.use(helmet());
 
 app.use(cors({
@@ -26,21 +52,23 @@ app.use(cors({
   credentials: true,
 }));
 
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     if (!origin || allowedOrigins.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("CORS blocked"));
-//     }
-//   },
-//   credentials: true,
-// }));
-
-
 app.use(express.json());
 app.use(cookieParser());
 
+// Ensure DB is connected before every request
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error("❌ MongoDB connection failed:", err.message);
+    res.status(500).json({ success: false, message: "Database connection failed. Please try again." });
+  }
+});
+
+// =============================================
+// Routes
+// =============================================
 app.use("/api/geocode", getlocation);
 app.use("/api/auth", authRouter);
 app.use("/api/complaints", complaintRouter);
@@ -53,10 +81,12 @@ app.get("/", (req, res) => {
   res.send("API WORKING");
 });
 
+// 404
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });
 });
 
+// Global error handler
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({
@@ -66,25 +96,12 @@ app.use((err, req, res, next) => {
   });
 });
 
-
-const PORT = process.env.PORT || 3000;
-
-// app.listen(PORT, () => {
-//   console.log(`Server running on ${PORT}`);
-// });
-
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("✅ MongoDB connected");
-  })
-  .catch(err => {
-    console.error(err);
-  });
-
-// REPLACE with:
+// Local dev server
 if (!isProd) {
   const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+  connectDB().then(() => {
+    app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+  });
 }
 
-export default app;
+export default app;
