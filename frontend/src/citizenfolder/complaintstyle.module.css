@@ -848,6 +848,17 @@ input[type="file"] {
   }
   .breadcrumb {
     font-size: 16px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .profiledropdown {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+    padding: 16px;
   }
   .filtersbar {
     gap: 12px;

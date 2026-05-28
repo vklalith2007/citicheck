@@ -472,6 +472,7 @@
 
   .mainContent {
     margin-left: 0;
+    width: 100%;
   }
 
   .overlay {
@@ -502,12 +503,46 @@
 }
 
 @media (max-width: 480px) {
+  .contentArea {
+    padding: 16px 12px;
+  }
+
+  .pageHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pageActions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .dashboardGrid {
+    grid-template-columns: 1fr;
+  }
+
   .statsGrid {
     grid-template-columns: 1fr;
   }
   
   .topbar {
-    padding: 16px 15px;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .pageTitle {
+    font-size: 16px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .statCard {

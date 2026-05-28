@@ -359,8 +359,10 @@ footer {
   }
   .profileDropdown {
     right: 16px;
-    width: 250px;
+    left: 16px;
+    width: auto;
     top: 65px;
+    max-width: none;
   }
   .welcomeSection h1 {
     font-size: 28px;
@@ -368,6 +370,12 @@ footer {
   .welcomeSection p {
     font-size: 16px;
   }
+  .dashboardCards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
   .dashboardCards {
     grid-template-columns: 1fr;
   }

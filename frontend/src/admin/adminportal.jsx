@@ -20,7 +20,7 @@ const AdminLayout = () => {
     logoutAdmin,
   } = useAdminPortal();
 
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => window.innerWidth <= 768);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [user, setUser] = useState(null);
   const [pageTitle, setPageTitle] = useState('Dashboard');
 
