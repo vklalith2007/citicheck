@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from './gueststyle.module.css';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from './useAuth';
 import { GoogleLogin } from '@react-oauth/google';
 
 const CitiSolveLanding = () => {
-  const navigate = useNavigate();
   const {
   signupUser,
   loginUser,

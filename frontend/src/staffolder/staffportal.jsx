@@ -51,6 +51,12 @@ const StaffPortal = () => {
       const userData = await fetchProfile();
       
       if (userData) {
+        // Role mismatch check — another tab may have overwritten the session
+        if (userData.role !== 'staff') {
+          console.log('❌ Role mismatch: expected staff, got', userData.role, '→ redirecting to login');
+          navigate('/');
+          return;
+        }
         console.log('✅ Staff data fetched:', userData);
         setUser(userData);
 

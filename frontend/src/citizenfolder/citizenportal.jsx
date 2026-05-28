@@ -4,7 +4,6 @@ import styles from "./citizenstyle.module.css";
 import Chart from "chart.js/auto";
 // Import the custom hook from home.jsx
 import { useCitizenPortal } from "./hooks/home.jsx";
-import { assign } from "nodemailer/lib/shared/index.js";
 
 const CitizenPortal = () => {
   const navigate = useNavigate();
@@ -53,6 +52,12 @@ const CitizenPortal = () => {
       const userData = await fetchProfile();
       
       if (userData) {
+        // Role mismatch check — another tab may have overwritten the session
+        if (userData.role !== 'citizen') {
+          console.log('❌ Role mismatch: expected citizen, got', userData.role, '→ redirecting to login');
+          navigate('/');
+          return;
+        }
         console.log("✅ User data fetched:", userData);
         setUser(userData);
 

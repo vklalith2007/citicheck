@@ -239,10 +239,6 @@ const AllocationPage = () => {
     setIsAllocating(false);
   };
 
-  const handleImageClick = () => {
-    setShowImageViewer(true);
-  };
-
   /* =========================
      UTILITY FUNCTIONS
   ========================= */

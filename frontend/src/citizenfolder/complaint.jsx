@@ -5,7 +5,7 @@ import { useMyComplaints } from "./hooks/mycomplaintshooks.jsx";
 
 const Complaint = () => {
   const navigate = useNavigate();
-  const { fetchProfile, fetchMyComplaints, fetchComplaintById, loading, error } = useMyComplaints();
+  const { fetchProfile, fetchMyComplaints, fetchComplaintById, loading } = useMyComplaints();
 
   const [user, setUser] = useState(null);
   const [sidebarActive, setSidebarActive] = useState(false);
@@ -28,7 +28,7 @@ const Complaint = () => {
       try {
         const userData = await fetchProfile();
         setUser(userData);
-      } catch (err) {
+      } catch {
         navigate("/");
       }
     };
@@ -92,7 +92,7 @@ const Complaint = () => {
         credentials: "include",
       });
       navigate("/");
-    } catch (err) {
+    } catch {
       navigate("/");
     }
   };

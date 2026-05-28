@@ -10,7 +10,7 @@ const SubmitComplaint = () => {
   // =========================
   // HOOKS & STATE
   // =========================
-  const { fetchProfile, submitComplaint, apiLoading, apiError } = useSubmitPortal();
+  const { fetchProfile, submitComplaint, apiLoading } = useSubmitPortal();
   
   const [user, setUser] = useState(null);
   const [pageLoading, setPageLoading] = useState(true);
@@ -104,13 +104,13 @@ const SubmitComplaint = () => {
           } else {
             setLocationError("Could not retrieve address details.");
           }
-        } catch (err) {
+        } catch {
           setLocationError("Failed to fetch address from coordinates.");
         } finally {
           setLocationLoading(false);
         }
       },
-      (error) => {
+      () => {
         setLocationError("Please enable location services and try again.");
         setLocationLoading(false);
       }
@@ -157,7 +157,7 @@ const SubmitComplaint = () => {
           }
         }
         // If no EXIF GPS found → no check, proceed normally
-      } catch (err) {
+      } catch {
         // EXIF read failed silently — no block
       }
     } else {
@@ -274,7 +274,7 @@ const SubmitComplaint = () => {
     try {
       await fetch(import.meta.env.VITE_BACKEND_URL+'/api/auth/logout', { method: 'POST', credentials: 'include' });
       navigate('/');
-    } catch (err) {
+    } catch {
       navigate('/');
     }
   };

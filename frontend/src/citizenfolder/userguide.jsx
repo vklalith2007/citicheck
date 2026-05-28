@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./complaintstyle.module.css";
 import { useCitizenPortal } from "./hooks/home.jsx";
 
 const UserGuide = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [user, setUser] = useState(null);
   const [sidebarActive, setSidebarActive] = useState(false);
   const {
@@ -25,8 +24,6 @@ const UserGuide = () => {
     } catch (err) {
       console.error("Profile fetch failed:", err);
       navigate("/");
-    } finally {
-      setLoading(false); // ✅ THIS WAS MISSING
     }
   };
 

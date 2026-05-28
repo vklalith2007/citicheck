@@ -33,6 +33,12 @@ const AdminLayout = () => {
       const userData = await fetchProfile();
       
       if (userData) {
+        // Role mismatch check — another tab may have overwritten the session
+        if (userData.role !== 'admin') {
+          console.log('❌ Role mismatch: expected admin, got', userData.role, '→ redirecting to login');
+          navigate('/');
+          return;
+        }
         console.log('✅ Admin data fetched:', userData);
         setUser(userData);
       } else {

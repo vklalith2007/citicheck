@@ -41,7 +41,7 @@ export const useAuth = () => {
       setPendingUserId(data.tempUserId);
       setOtpSent(true);
       return true;
-    } catch (err) {
+    } catch {
       setError('Network error');
       return false;
     } finally {
@@ -76,7 +76,7 @@ export const useAuth = () => {
       setPendingUserId(data.userId);
       setOtpSent(true);
       return true;
-    } catch (err) {
+    } catch {
       setError('Network error');
       return false;
     } finally {
@@ -92,8 +92,9 @@ export const useAuth = () => {
     setError('');
     setMessage('');
     if (!pendingUserId) {
-    setError("OTP session expired. Please login again.");
-    return false;
+      setError("OTP session expired. Please login again.");
+      setLoading(false);
+      return false;
     }
 
     const endpoint =
@@ -138,7 +139,7 @@ export const useAuth = () => {
       }
 
       return true;
-    } catch (err) {
+    } catch {
       setError('Network error');
       return false;
     } finally {
@@ -180,7 +181,7 @@ export const useAuth = () => {
       }
 
       return true;
-    } catch (err) {
+    } catch {
       setError('Network error');
       return false;
     } finally {
