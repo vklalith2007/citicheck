@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
-
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+import { apiFetch } from "../../utils/apiFetch.js";
 
 export const useMyComplaints = () => {
   const [loading, setLoading] = useState(false);
@@ -11,9 +10,7 @@ export const useMyComplaints = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${BASE_URL}/api/auth/profile`, {
-        credentials: "include",
-      });
+      const res = await apiFetch("/api/auth/profile");
 
       if (!res.ok) {
         throw new Error("Failed to fetch profile");
@@ -40,19 +37,14 @@ export const useMyComplaints = () => {
         params.append("page", page);
         params.append("limit", limit);
 
-        const res = await fetch(
-          `${BASE_URL}/api/complaints/my-complaints?${params.toString()}`,
-          {
-            credentials: "include",
-          }
-        );
+        const res = await apiFetch(`/api/complaints/my-complaints?${params.toString()}`);
 
         if (!res.ok) {
           throw new Error("Failed to fetch complaints");
         }
 
-        // Returns { complaints: [], total, page, pages } usually, 
-        // or just the array depending on strict backend return. 
+        // Returns { complaints: [], total, page, pages } usually,
+        // or just the array depending on strict backend return.
         // Returning full json to let component handle structure.
         return await res.json();
       } catch (err) {
@@ -70,9 +62,7 @@ export const useMyComplaints = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${BASE_URL}/api/complaints/${complaintId}`, {
-        credentials: "include",
-      });
+      const res = await apiFetch(`/api/complaints/${complaintId}`);
 
       if (!res.ok) {
         throw new Error("Failed to fetch complaint details");

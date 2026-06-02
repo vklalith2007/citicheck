@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-const API = import.meta.env.VITE_BACKEND_URL;
+import { apiFetch } from "../../utils/apiFetch.js";
 
 export const useSubmitPortal = () => {
   const [apiLoading, setApiLoading] = useState(false);
@@ -14,9 +13,7 @@ export const useSubmitPortal = () => {
     setApiError(null);
 
     try {
-      const res = await fetch(`${API}/api/auth/profile`, {
-        credentials: "include",
-      });
+      const res = await apiFetch("/api/auth/profile");
 
       const data = await res.json();
 
@@ -35,6 +32,8 @@ export const useSubmitPortal = () => {
 
   // =========================
   // SUBMIT COMPLAINT
+  // Note: uses FormData (multipart) — apiFetch auto-skips Content-Type
+  // so browser sets correct multipart/form-data boundary
   // =========================
   const submitComplaint = async ({ formData, image }) => {
     setApiLoading(true);
@@ -59,10 +58,9 @@ export const useSubmitPortal = () => {
       // Required image
       payload.append("images", image);
 
-      const res = await fetch(`${API}/api/complaints/submit`, {
+      const res = await apiFetch("/api/complaints/submit", {
         method: "POST",
-        credentials: "include",
-        body: payload,
+        body: payload, // FormData — apiFetch won't set Content-Type
       });
 
       const data = await res.json();

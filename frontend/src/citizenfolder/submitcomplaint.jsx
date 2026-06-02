@@ -3,6 +3,7 @@ import exifr from "exifr";
 import { useNavigate } from "react-router-dom";
 import styles from "./submitcomplaintstyle.module.css";
 import { useSubmitPortal } from "./hooks/submitcomplainthooks.jsx";
+import { apiFetch, clearToken } from "../utils/apiFetch.js";
 
 const SubmitComplaint = () => {
   const navigate = useNavigate();
@@ -272,9 +273,11 @@ const SubmitComplaint = () => {
   
   const handleLogout = async () => {
     try {
-      await fetch(import.meta.env.VITE_BACKEND_URL+'/api/auth/logout', { method: 'POST', credentials: 'include' });
+      await apiFetch('/api/auth/logout', { method: 'POST' });
+      clearToken();
       navigate('/');
     } catch (err) {
+      clearToken();
       navigate('/');
     }
   };
