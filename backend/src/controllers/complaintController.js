@@ -6,7 +6,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const VALID_CATEGORIES = ['roads', 'power', 'sanitation', 'water', 'other'];
 
-const GEMINI_MODEL = 'gemini-1.5-flash';
+const GEMINI_MODEL = 'gemini-2.5-flash';
 
 // =========================
 // CATEGORY LABELS FOR AI
