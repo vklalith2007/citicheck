@@ -361,6 +361,7 @@ export const sendLoginOtp = async (req, res) => {
         if (!user.password) {
             return res.status(400).json({
                 success: false,
+                isGoogleOnly: true,
                 message: 'This account uses Google Sign-In. Please continue with Google or reset your password.'
             });
         }
@@ -717,7 +718,7 @@ export const refreshAccessToken = async (req, res) => {
         res.cookie('accessToken', newAccessToken, {
             httpOnly: true,
             secure: isProduction,
-            sameSite: isProduction ? 'strict' : 'lax',
+            sameSite: isProduction ? 'none' : 'lax',
             path: '/',
             domain: isProduction ? process.env.COOKIE_DOMAIN : undefined,
             maxAge: 4 * 60 * 60 * 1000

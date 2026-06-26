@@ -20,6 +20,9 @@ const CitiSolveLanding = () => {
   otpSent,
   setError,
   setMessage,
+  isGoogleOnlyUser,
+  googleOnlyEmail,
+  clearGoogleOnlyStatus
   } = useAuth();
 
 
@@ -230,10 +233,10 @@ const CitiSolveLanding = () => {
     await googleLoginUser(credentialResponse.credential);
   };
 
-  const openForgot = () => {
+  const openForgot = (email = '') => {
     setShowForgot(true);
     setForgotStep('email');
-    setForgotEmail('');
+    setForgotEmail(email);
     setForgotOtp(new Array(6).fill(''));
     setForgotNewPassword('');
     setForgotSuccess(false);
@@ -578,6 +581,66 @@ const CitiSolveLanding = () => {
                 </>
               )}
             </form>
+          </div>
+        </div>
+      )}
+      {/* Google Redirect Modal */}
+      {isGoogleOnlyUser && (
+        <div className={styles.modalOverlay} onClick={clearGoogleOnlyStatus}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.closeBtn} onClick={clearGoogleOnlyStatus}>×</button>
+            <div className={styles.modalHeader}>
+              <h2 className={styles.modalTitle} style={{ color: '#283618', fontSize: '24px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                Google Account Detected
+              </h2>
+              <p style={{ color: '#606a56', marginTop: '12px', fontSize: '14px', lineHeight: '1.5' }}>
+                Your account <strong>{googleOnlyEmail}</strong> uses Google Sign-In. You do not have a manual password.
+              </p>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '24px' }}>
+              <div className={styles.googleButtonWrap} style={{ display: 'flex', justifyContent: 'center' }}>
+                <GoogleLogin
+                  onSuccess={(res) => {
+                    handleGoogleSuccess(res);
+                    clearGoogleOnlyStatus();
+                    setShowAuthModal(false);
+                  }}
+                  onError={() => setError('Google login failed. Please try again.')}
+                  text="signin_with"
+                  theme="filled_blue"
+                  size="large"
+                  shape="rectangular"
+                  logo_alignment="left"
+                  width="320"
+                />
+              </div>
+
+              <div style={{ textAlign: 'center', margin: '8px 0' }}>
+                <span style={{ color: '#a0a896', fontSize: '14px' }}>— or —</span>
+              </div>
+
+              <button 
+                type="button"
+                className={styles.submitBtn} 
+                style={{ width: '100%', margin: '0' }}
+                onClick={() => {
+                  clearGoogleOnlyStatus();
+                  setShowAuthModal(false);
+                  openForgot(googleOnlyEmail);
+                }}
+              >
+                Create a password for this account
+              </button>
+
+              <button 
+                type="button"
+                style={{ width: '100%', padding: '12px', background: 'transparent', color: '#606a56', border: '1px solid #e0d5b7', borderRadius: '12px', cursor: 'pointer', fontFamily: 'Poppins, sans-serif' }}
+                onClick={clearGoogleOnlyStatus}
+              >
+                Go Back
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -14,6 +14,13 @@ export const useAuth = () => {
 
   const [pendingUserId, setPendingUserId] = useState(null);
   const [authMode, setAuthMode] = useState(null); // 'signup' | 'login'
+  const [isGoogleOnlyUser, setIsGoogleOnlyUser] = useState(false);
+  const [googleOnlyEmail, setGoogleOnlyEmail] = useState('');
+
+  const clearGoogleOnlyStatus = () => {
+    setIsGoogleOnlyUser(false);
+    setGoogleOnlyEmail('');
+  };
 
   /* =========================
      SIGNUP
@@ -70,6 +77,10 @@ export const useAuth = () => {
       const data = await res.json();
 
       if (!res.ok || data.success === false) {
+        if (data.isGoogleOnly) {
+          setIsGoogleOnlyUser(true);
+          setGoogleOnlyEmail(payload.email);
+        }
         setError(data.message || 'Login failed');
         return false;
       }
@@ -313,5 +324,8 @@ export const useAuth = () => {
     otpSent,
     setError,
     setMessage,
+    isGoogleOnlyUser,
+    googleOnlyEmail,
+    clearGoogleOnlyStatus
   };
 };
