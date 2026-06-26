@@ -345,7 +345,7 @@ const CitizenPortal = () => {
           <div className={styles.profilesymbol} onClick={(e) => { e.stopPropagation(); setProfileDropdownOpen(!profileDropdownOpen); }}>
             {user.name?.charAt(0).toUpperCase() || 'U'}
           </div>
-          <div className={`${styles.profiledropdown} ${profileDropdownOpen ? styles.show : ''}`}>
+          <div className={styles.profiledropdown} style={{ display: profileDropdownOpen ? 'block' : 'none', opacity: profileDropdownOpen ? 1 : 0, transform: profileDropdownOpen ? 'translateY(0)' : 'translateY(-10px)' }}>
             <p><strong>Name: </strong>{user.name}</p>
             <p><strong>Email: </strong>{user.email}</p>
             <div style={{ marginTop: "12px", paddingTop: "12px", borderTop: "1px solid #eee" }}>
