@@ -15,7 +15,9 @@ export const useMyComplaints = () => {
       if (!res.ok) {
         throw new Error("Failed to fetch profile");
       }
-      return await res.json();
+      const data = await res.json();
+      // API returns { success: true, user: { name, email, ... } }
+      return data.user || data;
     } catch (err) {
       setError(err.message);
       throw err;

@@ -1017,13 +1017,16 @@ input[type="file"] {
 
 .logout {
   background-image: linear-gradient(135deg, #dda15e 0%, #bc6c25 100%);
+  color: white;
   cursor: pointer;
-  font-weight: 500;
-  width: max-content;
-  height: max-content;
-  border-radius: 5px;
-  padding:7px 10px;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+  border-radius: 8px;
+  padding: 10px 16px;
   transition: all 0.2s ease-in-out;
+  border: none;
 }
 
 .logout:hover {
