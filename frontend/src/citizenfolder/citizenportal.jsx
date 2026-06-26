@@ -4,7 +4,6 @@ import styles from "./citizenstyle.module.css";
 import Chart from "chart.js/auto";
 // Import the custom hook from home.jsx
 import { useCitizenPortal } from "./hooks/home.jsx";
-import { assign } from "nodemailer/lib/shared/index.js";
 
 const CitizenPortal = () => {
   const navigate = useNavigate();

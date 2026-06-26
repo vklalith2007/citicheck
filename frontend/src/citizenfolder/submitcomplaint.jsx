@@ -333,7 +333,7 @@ const SubmitComplaint = () => {
         <a className={styles.navlink} onClick={() => navigate("/citizen/userguide")}>📖 User Guide</a>
       </div>
 
-      <div className={styles.topnav} style={{ maxWidth: "100vw", overflow: "hidden", boxSizing: "border-box" }}>
+      <div className={styles.topnav} style={{ maxWidth: "100vw", overflow: "visible", boxSizing: "border-box" }}>
         <div className={styles.menuicon} onClick={toggleSidebar}>☰</div>
         <div className={styles.breadcrumb}>Submit Complaint</div>
         <div className={styles.profilesymbol} onClick={(e) => { e.stopPropagation(); setProfileDropdownOpen(!profileDropdownOpen); }}>
