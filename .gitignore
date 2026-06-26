@@ -1,11 +1,6 @@
 # Dependencies
 node_modules/
 
-# Package lock
-# Package files
-package.json
-package-lock.json
-
 # Environment variables
 .env
 .env.local
