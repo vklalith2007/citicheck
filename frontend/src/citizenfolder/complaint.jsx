@@ -10,6 +10,7 @@ const Complaint = () => {
 
   const [user, setUser] = useState(null);
   const [sidebarActive, setSidebarActive] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [complaints, setComplaints] = useState([]);
   
   // State for filters
@@ -35,6 +36,20 @@ const Complaint = () => {
     };
     initUser();
   }, [fetchProfile, navigate]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (sidebarActive && !e.target.closest(`.${styles.sidebar}`) && !e.target.closest(`.${styles.menuicon}`)) {
+        setSidebarActive(false);
+      }
+      if (profileDropdownOpen && !e.target.closest(`.${styles.profilesymbol}`) && !e.target.closest(`.${styles.profiledropdown}`)) {
+        setProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [sidebarActive, profileDropdownOpen]);
 
   // 2. Fetch Complaints when filters change (Server-Side Filtering)
   useEffect(() => {
@@ -143,16 +158,16 @@ const Complaint = () => {
         <div className={styles.breadcrumb}>My Complaints</div>
         <div
           className={styles.profilesymbol}
-          onClick={() => {
-            document.querySelector(`.${styles.profiledropdown}`).classList.toggle(styles.show);
+          onClick={(e) => {
+            e.stopPropagation();
+            setProfileDropdownOpen(!profileDropdownOpen);
           }}
         >
-          {user.fullname?.charAt(0).toUpperCase()}
+          {user.name?.charAt(0).toUpperCase() || 'U'}
         </div>
-        <div className={styles.profiledropdown}>
-          <p><strong>{user.fullname}</strong></p>
+        <div className={`${styles.profiledropdown} ${profileDropdownOpen ? styles.show : ''}`}>
+          <p><strong>Name: </strong>{user.name}</p>
           <p><strong>Email: </strong>{user.email}</p>
-          <p><strong>Ward: </strong>{user.ward}</p>
           <div className={styles.logout} onClick={handleLogout}>Logout</div>
         </div>
       </div>

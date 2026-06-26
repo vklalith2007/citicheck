@@ -8,6 +8,7 @@ const FAQ = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [sidebarActive, setSidebarActive] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
   const {
       fetchProfile,
@@ -77,10 +78,13 @@ const FAQ = () => {
       if (sidebarActive && !e.target.closest(`.${styles.sidebar}`) && !e.target.closest(`.${styles.menuicon}`)) {
         setSidebarActive(false);
       }
+      if (profileDropdownOpen && !e.target.closest(`.${styles.profilesymbol}`) && !e.target.closest(`.${styles.profiledropdown}`)) {
+        setProfileDropdownOpen(false);
+      }
     };
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
-  }, [sidebarActive]);
+  }, [sidebarActive, profileDropdownOpen]);
 
   const handleLogout = async () => {
     await logoutCitizen();
@@ -115,17 +119,16 @@ const FAQ = () => {
       <div className={styles.topnav}>
         <div className={styles.menuicon} onClick={toggleSidebar}>☰</div>
         <div className={styles.breadcrumb}>FAQ</div>
-        <div className={styles.profilesymbol} onClick={() => {
-          document.querySelector(`.${styles.profiledropdown}`).classList.toggle(styles.show);
+        <div className={styles.profilesymbol} onClick={(e) => {
+          e.stopPropagation();
+          setProfileDropdownOpen(!profileDropdownOpen);
         }}>
           {user.name?.charAt(0).toUpperCase()}
         </div>
-        <div className={styles.profiledropdown}>
+        <div className={`${styles.profiledropdown} ${profileDropdownOpen ? styles.show : ''}`}>
           <p><strong>Name: </strong>{user.name}</p>
           <p><strong>Email: </strong>{user.email}</p>
-          <p><div className={styles.logout} onClick={handleLogout}>
-                        Logout
-                      </div></p>
+          <div className={styles.logout} onClick={handleLogout}>Logout</div>
         </div>
       </div>
 

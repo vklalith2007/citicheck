@@ -69,6 +69,20 @@ const SubmitComplaint = () => {
     initData();
   }, [navigate]);
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (sidebarActive && !e.target.closest(`.${styles.sidebar}`) && !e.target.closest(`.${styles.menuicon}`)) {
+        setSidebarActive(false);
+      }
+      if (profileDropdownOpen && !e.target.closest(`.${styles.profilesymbol}`) && !e.target.closest(`.${styles.profiledropdown}`)) {
+        setProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [sidebarActive, profileDropdownOpen]);
+
   // =========================
   // LOCATION LOGIC
   // =========================
@@ -322,14 +336,12 @@ const SubmitComplaint = () => {
       <div className={styles.topnav} style={{ maxWidth: "100vw", overflow: "hidden", boxSizing: "border-box" }}>
         <div className={styles.menuicon} onClick={toggleSidebar}>☰</div>
         <div className={styles.breadcrumb}>Submit Complaint</div>
-        <div className={styles.profilesymbol} onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}>
+        <div className={styles.profilesymbol} onClick={(e) => { e.stopPropagation(); setProfileDropdownOpen(!profileDropdownOpen); }}>
           {user.name?.charAt(0).toUpperCase()}
         </div>
         <div className={`${styles.profiledropdown} ${profileDropdownOpen ? styles.show : ''}`}>
-          <p><strong>ID:</strong> {user.id}</p>
           <p><strong>Name:</strong> {user.name}</p>
           <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Ward:</strong> {user.ward}</p>
           <div className={styles.logout} onClick={handleLogout}>Logout</div>
         </div>
       </div>

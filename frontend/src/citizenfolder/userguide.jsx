@@ -7,7 +7,9 @@ const UserGuide = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [sidebarActive, setSidebarActive] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const {
         fetchProfile,
         logoutCitizen
@@ -92,30 +94,25 @@ const UserGuide = () => {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      const sidebar = document.querySelector(`.${styles.sidebar}`);
-      const menuIcon = document.querySelector(`.${styles.menuicon}`);
-      const profileDropdown = document.querySelector(`.${styles.profiledropdown}`);
-      const profileSymbol = document.querySelector(`.${styles.profilesymbol}`);
-
-      if (sidebarActive && sidebar && !sidebar.contains(e.target) && !menuIcon.contains(e.target)) {
+      if (sidebarActive && !e.target.closest(`.${styles.sidebar}`) && !e.target.closest(`.${styles.menuicon}`)) {
         setSidebarActive(false);
       }
-
-      if (profileDropdown && !profileDropdown.contains(e.target) && !profileSymbol.contains(e.target)) {
-        profileDropdown.classList.remove(styles.show);
+      if (profileDropdownOpen && !e.target.closest(`.${styles.profilesymbol}`) && !e.target.closest(`.${styles.profiledropdown}`)) {
+        setProfileDropdownOpen(false);
       }
     };
 
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
-  }, [sidebarActive]);
+  }, [sidebarActive, profileDropdownOpen]);
 
   const handleLogout = () => {
     logoutCitizen();
     navigate("/");
   };
 
-  if (!user) return <div className={styles.loading}>Loading...</div>;
+  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (!user) return null;
 
   return (
     <div className={styles.main}>
@@ -141,18 +138,16 @@ const UserGuide = () => {
       <div className={styles.topnav}>
         <div className={styles.menuicon} onClick={toggleSidebar}>☰</div>
         <div className={styles.breadcrumb}>User Guide</div>
-        <div className={styles.profilesymbol} onClick={() => {
-          document.querySelector(`.${styles.profiledropdown}`).classList.toggle(styles.show);
+        <div className={styles.profilesymbol} onClick={(e) => {
+          e.stopPropagation();
+          setProfileDropdownOpen(!profileDropdownOpen);
         }}>
           {user.name?.charAt(0).toUpperCase()}
         </div>
-        <div className={styles.profiledropdown}>
+        <div className={`${styles.profiledropdown} ${profileDropdownOpen ? styles.show : ''}`}>
           <p><strong>Name: </strong>{user.name}</p>
           <p><strong>Email: </strong>{user.email}</p>
-          <p><strong>Ward: </strong>{user.ward}</p>
-          <p><div className={styles.logout} onClick={handleLogout}>
-                        Logout
-                      </div></p>
+          <div className={styles.logout} onClick={handleLogout}>Logout</div>
         </div>
       </div>
 

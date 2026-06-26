@@ -347,9 +347,8 @@ const CitizenPortal = () => {
             {user.name?.charAt(0).toUpperCase() || 'U'}
           </div>
           <div className={`${styles.profiledropdown} ${profileDropdownOpen ? styles.show : ''}`}>
-            <p><strong>Id : {user.id}</strong></p>
-            <p><strong>Name : </strong>{user.name}</p>
-            <p><strong>Email :</strong>{user.email}</p>
+            <p><strong>Name: </strong>{user.name}</p>
+            <p><strong>Email: </strong>{user.email}</p>
             <div style={{ marginTop: "12px", paddingTop: "12px", borderTop: "1px solid #eee" }}>
               <div className={styles.logout} onClick={handleLogout}>Logout</div>
             </div>
