@@ -128,7 +128,9 @@ const FAQ = () => {
         <div className={styles.profiledropdown} style={{ display: profileDropdownOpen ? 'block' : 'none', opacity: profileDropdownOpen ? 1 : 0, transform: profileDropdownOpen ? 'translateY(0)' : 'translateY(-10px)' }}>
           <p><strong>Name: </strong>{user.name}</p>
           <p><strong>Email: </strong>{user.email}</p>
-          <div className={styles.logout} onClick={handleLogout}>Logout</div>
+          <div style={{ marginTop: "12px", paddingTop: "12px", borderTop: "1px solid #eee" }}>
+            <div className={styles.logout} onClick={handleLogout}>Logout</div>
+          </div>
         </div>
       </div>
 

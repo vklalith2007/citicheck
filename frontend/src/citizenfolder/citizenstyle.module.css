@@ -163,7 +163,7 @@
   color: #283618;
   padding: 20px;
   border-radius: 16px;
-  width: 400px;
+  width: 280px;
   max-width: calc(100vw - 40px);
   box-shadow: 0 8px 32px rgba(0,0,0,0.15);
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -177,10 +177,11 @@
 }
 
 .profiledropdown p {
-  margin: 8px 0;
+  margin: 6px 0;
   word-wrap: break-word;
-  border-bottom: 1px solid #959292;
-  font-size: 7px;
+  font-size: 14px;
+  color: #283618;
+  line-height: 1.5;
 }
 
 /* Content */
