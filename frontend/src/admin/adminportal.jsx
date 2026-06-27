@@ -17,12 +17,14 @@ const AdminLayout = () => {
   const {
     loading: hookLoading,
     fetchProfile,
+    fetchPendingStaffCount,
     logoutAdmin,
   } = useAdminPortal();
 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => window.innerWidth <= 768);
   const [user, setUser] = useState(null);
   const [pageTitle, setPageTitle] = useState('Dashboard');
+  const [pendingCount, setPendingCount] = useState(0);
 
   /* =========================
      INITIAL DATA FETCH
@@ -35,6 +37,9 @@ const AdminLayout = () => {
       if (userData) {
         console.log('✅ Admin data fetched:', userData);
         setUser(userData);
+        // Fetch pending count
+        const count = await fetchPendingStaffCount();
+        setPendingCount(count);
       } else {
         console.log('❌ Admin not authenticated');
         navigate('/');
@@ -59,7 +64,7 @@ const AdminLayout = () => {
   }, []);
 
   /* =========================
-     UPDATE PAGE TITLE
+     UPDATE PAGE TITLE & PENDING COUNT
   ========================= */
   useEffect(() => {
     const path = location.pathname;
@@ -80,7 +85,12 @@ const AdminLayout = () => {
     }
     
     setPageTitle(title);
-  }, [location.pathname]);
+
+    // Refresh pending staff count on page navigation
+    if (user) {
+      fetchPendingStaffCount().then(count => setPendingCount(count));
+    }
+  }, [location.pathname, user]);
 
   /* =========================
      HANDLERS
@@ -186,15 +196,17 @@ const AdminLayout = () => {
         <div className={styles.sidebarFooter}>
           <div className={styles.adminInfo}>
             <div className={styles.adminAvatar}>
-              {user?.name ? user.name.charAt(0).toUpperCase() : 'A'}
+              {user?.email ? user.email.charAt(0).toUpperCase() : 'A'}
             </div>
             <div>
-              <p className={styles.adminName}>{user?.name || 'Admin User'}</p>
-              <p className={styles.adminRole}>{user?.email || 'admin@citisolve.com'}</p>
-              <p className={styles.adminRole}>
-                {user?.district && user?.state ? `${user.district}, ${user.state}` : 'Location: N/A'}
+              <p className={styles.adminName} style={{ wordBreak: 'break-all', fontSize: '13px' }}>
+                {user?.email || 'admin@citisolve.com'}
               </p>
-              <p className={styles.adminRole}>ID: {user?.id || 'none'}</p>
+              {user?.district && user?.state && (
+                <p className={styles.adminRole}>
+                  {user.district}, {user.state}
+                </p>
+              )}
             </div>
           </div>
           <button className={styles.logoutBtn} onClick={handleLogout}>
@@ -218,8 +230,8 @@ const AdminLayout = () => {
           </div>
           <h1 className={styles.pageTitle}>{pageTitle}</h1>
           <div className={styles.topbarRight}>
-            <button className={styles.notificationBtn}>
-              🔔<span className={styles.notificationBadge}>5</span>
+            <button className={styles.notificationBtn} onClick={() => navigate('/admin/staff')}>
+              🔔<span className={styles.notificationBadge}>{pendingCount}</span>
             </button>
           </div>
         </div>

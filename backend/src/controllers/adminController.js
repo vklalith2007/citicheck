@@ -398,12 +398,14 @@ export const getAllStaff = async (req, res) => {
 
     const {
       department = 'all',
+      approvalStatus,
       search,
       page = 1,
       limit = 10
     } = req.query;
     const query = { role: 'staff', state, district, isAccountVerified: true };
     if (department !== 'all') query.department = department;
+    if (approvalStatus) query.approvalStatus = approvalStatus;
 
     if (search && search.trim()) {
       const sanitizedSearch = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

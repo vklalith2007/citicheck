@@ -20,7 +20,7 @@ export const useAdminDashboard = () => {
         throw new Error(data.message || "Not authenticated");
       }
 
-      return data;
+      return data.user || data;
     } catch (err) {
       setError(err.message);
       return null;

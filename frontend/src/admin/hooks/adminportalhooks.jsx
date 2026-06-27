@@ -20,12 +20,31 @@ export const useAdminPortal = () => {
         throw new Error(data.message || "Not authenticated");
       }
 
-      return data;
+      // API returns { success: true, user: { ... } }
+      return data.user || data;
     } catch (err) {
       setError(err.message);
       return null;
     } finally {
       setLoading(false);
+    }
+  };
+
+  /* =========================
+     FETCH PENDING STAFF COUNT
+  ========================= */
+  const fetchPendingStaffCount = async () => {
+    try {
+      const res = await apiFetch("/api/admin/staff?approvalStatus=pending&limit=1");
+      if (!res.ok) return 0;
+      const data = await res.json();
+      if (data.success && data.pagination) {
+        return data.pagination.totalStaff || 0;
+      }
+      return 0;
+    } catch (err) {
+      console.error("Error fetching pending staff count:", err);
+      return 0;
     }
   };
 
@@ -47,6 +66,7 @@ export const useAdminPortal = () => {
     loading,
     error,
     fetchProfile,
+    fetchPendingStaffCount,
     logoutAdmin,
   };
 };
